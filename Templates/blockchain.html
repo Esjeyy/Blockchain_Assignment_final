@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blockchain Voting</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Blockchain Voting System</h1>
+        <p>Below is the current blockchain:</p>
+
+        <div id="chain">
+            {% for block in chain %}
+            <div class="block">
+                <h3>Block #{{ block.index }}</h3>
+                <p><strong>Hash:</strong> {{ block.current_hash }}</p>
+                <p><strong>Previous Hash:</strong> {{ block.previous_hash }}</p>
+                <p><strong>Nonce:</strong> {{ block.nonce }}</p>
+                <p><strong>Timestamp:</strong> {{ block.timestamp | to_datetime }}</p>
+                <p><strong>Votes:</strong></p>
+                <ul>
+                    {% for vote in block.votes %}
+                    <li>Voter: {{ vote.voter_id }}, Candidate: {{ vote.candidate }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

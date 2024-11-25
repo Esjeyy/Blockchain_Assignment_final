@@ -1,0 +1,73 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url('/static/static.jpg'); /* Background image */
+    background-size: cover;
+    background-repeat: repeat; /* Allow background to repeat */
+    font-family: Arial, sans-serif;
+    color: #E0FFFF; /* Light Cyan for better readability */
+    text-align: center;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Adjust to align content at the top */
+    height: 100vh; /* Full viewport height */
+    overflow: hidden; /* Prevent content overflow */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Subtle drop shadow for text */
+}
+
+h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    font-size: 1rem;
+    color: #E0FFFF; /* Matches the text color */
+    text-decoration: none;
+    background-color: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
+    border: 2px solid #E0FFFF; /* Light Cyan border */
+    border-radius: 5px;
+    transition: all 0.3s ease;
+}
+
+.button:hover {
+    background-color: #E0FFFF; /* Solid light cyan on hover */
+    color: black; /* Contrast color */
+}
+
+/* Fix for blockchain layout */
+#chain {
+    width: 90%; /* Take up 90% of the screen width */
+    max-height: 70vh; /* Restrict block container height to 70% of viewport */
+    overflow-y: auto; /* Add vertical scroll for overflow */
+    padding: 10px;
+    margin: 20px auto;
+    background-color: rgba(0, 0, 0, 0.5); /* Slightly darker background for contrast */
+    border-radius: 10px;
+}
+
+.block {
+    border: 2px solid white;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 10px 0;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    text-align: left;
+}
+
+.block h3 {
+    margin: 0;
+    padding: 0;
+}
