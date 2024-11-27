@@ -7,69 +7,64 @@ body {
     background-repeat: no-repeat;
     background-attachment: fixed; /* Fix the background while scrolling */
     font-family: 'Arial', sans-serif;
-    color: #E0FFFF; /* Light cyan for better readability */
+    color: #E0FFFF; /* Light Cyan for better readability */
     text-align: center;
     overflow-x: hidden; /* Prevent horizontal scrolling */
     padding-top: 70px; /* Space for the fixed navbar */
 }
 
-/* Text Container for Main Content */
 .container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     padding: 20px;
+    height: auto;
     min-height: 100vh; /* Ensure container covers the viewport */
-    background: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
-    color: #E0FFFF; /* Light cyan text color */
-    border-radius: 10px; /* Smooth rounded edges */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Add a shadow for better contrast */
-    max-width: 900px;
-    margin: 20px auto;
 }
 
 /* Headings */
 h1 {
     font-size: 3rem;
     margin-bottom: 1rem;
-    color: #FFFFFF; /* White for better contrast */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); /* Add depth */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Add depth */
 }
 
-/* Paragraphs */
-.container p {
-    font-size: 1.2rem;
-    line-height: 1.6; /* Improve readability with better line spacing */
-    color: #FFFFFF; /* White text for better visibility */
+/* Block Styles */
+.block, .block-detail {
+    border: 1px solid rgba(224, 255, 255, 0.8); /* Subtle cyan border */
+    border-radius: 10px;
+    padding: 20px;
+    margin: 15px auto;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
+    color: #E0FFFF; /* Light cyan text */
+    text-align: left;
+    width: 90%;
+    max-width: 800px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Add shadow for depth */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.block:hover, .block-detail:hover {
+    transform: scale(1.02); /* Slight zoom on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5); /* Enhance shadow */
+}
+
+.block h3, .block-detail p {
     margin: 10px 0;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Subtle text shadow */
-}
-
-/* Bullet Points */
-.container ul {
-    list-style: none; /* Remove default bullet styling */
     padding: 0;
-    margin: 20px 0;
 }
 
-.container ul li {
-    font-size: 1.2rem;
-    line-height: 1.8;
-    color: #FFFFFF; /* White for better visibility */
-    position: relative;
-    margin: 5px 0;
-    padding-left: 20px;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* Subtle shadow */
+/* List Styles */
+.block ul, .block-detail ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 }
 
-.container ul li:before {
-    content: '•'; /* Custom bullet point */
-    color: #E0FFFF; /* Light cyan bullets */
-    font-size: 1.5rem;
-    position: absolute;
-    left: 0;
-    top: 0;
+.block li, .block-detail li {
+    margin-bottom: 10px;
+    line-height: 1.6;
 }
 
 /* Button Styles */
@@ -84,7 +79,6 @@ h1 {
     border-radius: 5px;
     transition: all 0.3s ease;
     cursor: pointer;
-    margin: 10px;
 }
 
 .button:hover {
