@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voter Form</title>
+    <link rel="stylesheet" href="/static/styles.css">
+</head>
+<body>
+    <!-- Include the navbar -->
+    {% include 'navbar.html' %}
+
+    <div class="container">
+        <h1>Submit Your Vote</h1>
+        <form action="/vote" method="POST" id="voteForm">
+            <input type="text" id="voter_id" placeholder="Your Voter ID" required>
+            <select id="candidate" required>
+                <option value="Ethereum">Ethereum</option>
+                <option value="Bitcoin">Bitcoin</option>
+            </select>
+            <button type="submit" class="button">Submit Vote</button>
+        </form>
+
+        <h2>Validators</h2>
+        <div id="validators-status">
+            <!-- Dynamically load validator status here -->
+        </div>
+
+        <!-- Loading Slider -->
+        <div id="loading-slider-container">
+            <p>Validating...</p>
+            <div id="loading-slider">
+                <div id="slider-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('voteForm').onsubmit = async function(event) {
+            event.preventDefault();
+            
+            const voter_id = document.getElementById('voter_id').value;
+            const candidate = document.getElementById('candidate').value;
+
+            const response = await fetch('/vote', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ voter_id, candidate })
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                alert(result.message);
+                await validateBlock();
+            } else {
+                alert(result.error);
+            }
+        };
+
+        async function validateBlock() {
+            // Show loading slider
+            document.getElementById('loading-slider-container').style.display = 'block';
+            let progress = 0;
+            const slider = document.getElementById('slider-progress');
+
+            // Simulate 1-second validation for each validator
+            const validators = ['Validator A', 'Validator B', 'Validator C'];
+            for (let i = 0; i < validators.length; i++) {
+                await new Promise(resolve => setTimeout(resolve, 1000));  // Simulate 1 second per validator
+                progress += 33;  // Each validator adds 33% to progress
+                slider.style.width = progress + '%';  // Update slider width
+                document.getElementById('validators-status').innerHTML = `Validating: ${validators[i]}`;
+            }
+
+            // Assume validation passes (for demonstration)
+            document.getElementById('validators-status').innerHTML = 'Validation Complete: 2/3 Validators agree!';
+            // Submit block validation after all 3 validators have processed
+            const validationResponse = await fetch('/validate_block', { method: 'GET' });
+
+            if (validationResponse.ok) {
+                alert('Block validated and added to the blockchain!');
+            } else {
+                alert('Block validation failed!');
+            }
+        }
+    </script>
+</body>
+</html>

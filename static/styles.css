@@ -1,22 +1,25 @@
+/* General Styles */
 body {
     margin: 0;
     padding: 0;
     background-image: url('/static/static.jpg'); /* Background image */
-    background-size: cover;
+    background-size: auto;
     background-repeat: repeat; /* Allow background to repeat */
     font-family: Arial, sans-serif;
     color: #E0FFFF; /* Light Cyan for better readability */
     text-align: center;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    padding-top: 60px; /* Give space for the fixed navbar */
 }
 
 .container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start; /* Adjust to align content at the top */
-    height: 100vh; /* Full viewport height */
-    overflow: hidden; /* Prevent content overflow */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Subtle drop shadow for text */
+    justify-content: flex-start; /* Align content at the top */
+    padding: 20px;
+    height: auto; /* Let content flow naturally */
+    min-height: 100vh; /* Ensure the container covers the entire height */
 }
 
 h1 {
@@ -24,11 +27,92 @@ h1 {
     margin-bottom: 1rem;
 }
 
-p {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
+/* Navbar Styles */
+nav {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Dark background for navbar */
+    padding: 10px 0;  /* Reduced padding for better spacing */
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Ensure the navbar stays on top */
 }
 
+nav ul {
+    list-style: none;  /* Remove default list styling */
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;  /* Center the navbar items */
+    align-items: center;
+}
+
+nav ul li {
+    margin: 0 20px;  /* Add space between menu items */
+}
+
+nav ul li a {
+    color: #E0FFFF;  /* Light cyan color for links */
+    text-decoration: none;  /* Remove underline */
+    font-size: 1.2rem;
+    font-weight: 600;  /* Make the text a little bolder */
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition */
+}
+
+nav ul li a:hover {
+    background-color: #E0FFFF;  /* Light cyan background on hover */
+    color: black;  /* Change text color to black on hover */
+}
+
+/* Block Styles */
+.block {
+    border: 2px solid white;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 10px 0;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    text-align: left;
+    width: 90%;
+    max-width: 800px;
+    margin: 15px auto;
+}
+
+.block h3 {
+    margin: 0;
+    padding: 0;
+}
+
+.block ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.block li {
+    margin-bottom: 5px;
+}
+
+/* Block Detail Styles */
+.block-detail {
+    border: 2px solid white;
+    border-radius: 10px;
+    padding: 15px;
+    margin: 10px 0;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+    text-align: left;
+    width: 90%;
+    max-width: 800px;
+    margin: 15px auto;
+}
+
+.block-detail p {
+    margin: 10px 0;
+}
+
+/* Button Styles */
 .button {
     display: inline-block;
     padding: 10px 20px;
@@ -46,28 +130,54 @@ p {
     color: black; /* Contrast color */
 }
 
-/* Fix for blockchain layout */
-#chain {
-    width: 90%; /* Take up 90% of the screen width */
-    max-height: 70vh; /* Restrict block container height to 70% of viewport */
-    overflow-y: auto; /* Add vertical scroll for overflow */
-    padding: 10px;
-    margin: 20px auto;
-    background-color: rgba(0, 0, 0, 0.5); /* Slightly darker background for contrast */
-    border-radius: 10px;
+/* Pagination Styles */
+#pagination {
+    margin-top: 20px;
 }
 
-.block {
-    border: 2px solid white;
-    border-radius: 10px;
-    padding: 15px;
-    margin: 10px 0;
-    background-color: rgba(255, 255, 255, 0.2);
+#pagination .button {
+    padding: 10px 20px;
+    margin: 0 5px;
+    background-color: rgba(255, 255, 255, 0.3);
     color: white;
-    text-align: left;
+    text-decoration: none;
+    border-radius: 5px;
 }
 
-.block h3 {
-    margin: 0;
-    padding: 0;
+#pagination .button:hover {
+    background-color: #E0FFFF;
+    color: black;
+}
+
+/* Optional: Disabled Button Styles */
+#pagination .button:disabled {
+    background-color: #ccc;
+    color: #666;
+    cursor: not-allowed;
+}
+
+/* Optional: Make the navbar sticky at the top */
+body {
+    padding-top: 60px;  /* Give space for the fixed navbar */
+}
+
+/* Optional responsiveness for mobile */
+@media screen and (max-width: 768px) {
+    nav ul {
+        flex-direction: column;  /* Stack items vertically on smaller screens */
+        padding: 10px 0;
+    }
+
+    nav ul li {
+        margin: 10px 0;  /* Space out items vertically */
+    }
+
+    nav ul li a {
+        font-size: 1rem;  /* Adjust font size for mobile */
+        padding: 10px 20px;
+    }
+
+    .block {
+        width: 95%;  /* Adjust block width for smaller screens */
+    }
 }
