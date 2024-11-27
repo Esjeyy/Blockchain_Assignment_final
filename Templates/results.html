@@ -1,0 +1,113 @@
+<head>
+    <head>
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                background-image: url('/static/static.jpg'); /* Background image */
+                background-size: cover; /* Make the background cover the viewport */
+                background-repeat: no-repeat;
+                background-attachment: fixed; /* Fix the background while scrolling */
+                font-family: 'Arial', sans-serif;
+                color: #E0FFFF; /* Light Cyan for better readability */
+                text-align: center;
+                overflow-x: hidden; /* Prevent horizontal scrolling */
+                padding-top: 70px; /* Space for the fixed navbar */
+            }
+    
+            .container {
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+                background-color: #fff;
+                border-radius: 8px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+    
+            .vote-counts {
+                text-align: center;
+                font-size: 18px;
+                margin-bottom: 20px;
+                color: #222; /* Even darker for the vote counts */
+            }
+    
+            .vote-counts span {
+                display: inline-block;
+                margin: 0 15px;
+                font-weight: bold;
+            }
+    
+            .progress-container {
+                width: 100%;
+                height: 30px;
+                background-color: #e0e0e0;
+                border-radius: 15px;
+                margin: 10px 0;
+                box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+            }
+    
+            .progress-bar {
+                height: 100%;
+                display: flex;
+                text-align: center;
+                color: white;
+                line-height: 30px;
+                border-radius: 15px;
+                font-weight: bold;
+                transition: width 0.5s ease-in-out;
+            }
+    
+            .progress-bar-ethereum {
+                background-color: #4caf50;
+                width: {{ ethereum_percentage }}%;
+            }
+    
+            .progress-bar-bitcoin {
+                background-color: #ff9800;
+                width: {{ bitcoin_percentage }}%;
+            }
+    
+            .progress-label {
+                font-size: 16px;
+                display: block;
+                margin-bottom: 5px;
+                color: #444; /* Slightly darker for the labels */
+                text-align: center;
+                font-weight: bold;
+            }
+    
+            .result-header {
+                text-align: center;
+                font-size: 24px;
+                font-weight: bold;
+                margin-bottom: 40px;
+                color: #222; /* Dark Gray for the header */
+            }
+        </style>
+    </head>
+    
+{% include 'navbar.html' %}
+<body>
+    <div class="container">
+        <div class="result-header">
+            Vote Results
+        </div>
+        <div class="vote-counts">
+            <span>Ethereum: {{ vote_count['Ethereum'] }}</span>
+            <span>Bitcoin: {{ vote_count['Bitcoin'] }}</span>
+        </div>
+
+        <div class="progress-label">Ethereum vs Bitcoin</div>
+        <!-- Combined Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress-bar-ethereum">
+                    {{ ethereum_percentage | round(2) }}%
+                </div>
+                <div class="progress-bar-bitcoin">
+                    {{ bitcoin_percentage | round(2) }}%
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

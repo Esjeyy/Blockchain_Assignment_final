@@ -1,8 +1,87 @@
 <!-- templates/navbar.html -->
-<nav>
+<nav class="navigationbar">
     <ul>
         <li><a href="/">Home</a></li>
         <li><a href="/blockchain">Blockchain</a></li>
         <li><a href="/voters">Voters</a></li>
+        <li><a href="/results">Results</a></li>
     </ul>
 </nav>
+<script>// JavaScript for navbar scroll behavior
+    let lastScrollY = window.scrollY;
+    
+    window.addEventListener('scroll', () => {
+        const navbar = document.querySelector('.navigationbar');
+    
+        // Hide navbar when scrolling down, show when scrolling up
+        if (window.scrollY > lastScrollY) {
+            navbar.classList.add('hidden');
+        } else {
+            navbar.classList.remove('hidden');
+        }
+    
+        // Add 'scrolled' class when past a certain scroll point
+        if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+        } else {
+            navbar.classList.remove('scrolled');
+        }
+    
+        lastScrollY = window.scrollY;
+    });
+    </script>
+<style>
+ /* Navbar Styles */
+.navigationbar {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.8); /* Dark transparent background */
+    padding: 10px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Ensure it stays on top */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Subtle shadow */
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.navigationbar.scrolled {
+    background-color: rgba(0, 0, 0, 0.95); /* Slightly darker on scroll */
+    transform: translateY(0); /* Ensure navbar stays visible */
+}
+
+.navigationbar.hidden {
+    transform: translateY(-100%); /* Hide navbar when scrolling down */
+}
+
+.navigationbar ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.navigationbar ul li {
+    margin: 0 20px;
+}
+
+.navigationbar ul li a {
+    color: #E0FFFF; /* Light cyan color for links */
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: 10px 15px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
+}
+
+.navigationbar ul li a:hover {
+    background-color: #E0FFFF; /* Light cyan background on hover */
+    color: black; /* Change text color to black */
+    transform: scale(1.1); /* Slightly enlarge the text on hover */
+    box-shadow: 0 4px 8px rgba(224, 255, 255, 0.5); /* Subtle glow */
+}
+
+
+</style>

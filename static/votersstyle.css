@@ -1,0 +1,119 @@
+/* Reset some default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Background and layout */
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url('/static/static.jpg'); /* Background image */
+    background-size: cover; /* Make the background cover the viewport */
+    background-repeat: no-repeat;
+    background-attachment: fixed; /* Fix the background while scrolling */
+    font-family: 'Arial', sans-serif;
+    color: #E0FFFF; /* Light Cyan for better readability */
+    text-align: center;
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+    padding-top: 70px; /* Space for the fixed navbar */
+}
+
+/* Container for the main content */
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 40px;
+    background-color: rgba(0, 0, 0, 0.5); /* Dark overlay for contrast */
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Title */
+h1 {
+    font-size: 2.2rem;
+    margin-bottom: 30px;
+    color: #FFFFFF;
+    font-weight: 600;
+}
+
+/* Form styling */
+input, select {
+    width: 100%;
+    padding: 15px;
+    margin: 12px 0;
+    border: 1px solid #E0FFFF;
+    border-radius: 8px;
+    background-color: #222;
+    color: #E0FFFF;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+/* Input focus styles */
+input:focus, select:focus {
+    border-color: #00BFFF; /* Blue focus effect */
+    outline: none;
+}
+
+/* Button styling */
+button {
+    width: 100%;
+    padding: 15px;
+    background-color: #00BFFF; /* Sky blue */
+    border: none;
+    border-radius: 8px;
+    color: #FFFFFF;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 20px;
+}
+
+button:hover {
+    background-color: #008CBA;
+}
+
+/* Validators section */
+#validators-status {
+    margin-top: 30px;
+    font-size: 1.1rem;
+    color: #E0FFFF;
+}
+
+/* Loading slider */
+#loading-slider-container {
+    margin-top: 30px;
+    display: none;
+}
+
+#loading-slider {
+    width: 100%;
+    height: 10px;
+    background-color: #E0FFFF;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+#slider-progress {
+    width: 0;
+    height: 100%;
+    background-color: #00BFFF;
+    transition: width 1s ease;
+}
+
+/* Responsive styling */
+@media (max-width: 600px) {
+    .container {
+        padding: 25px;
+    }
+
+    h1 {
+        font-size: 1.8rem;
+    }
+
+    button {
+        font-size: 1rem;
+    }
+}
