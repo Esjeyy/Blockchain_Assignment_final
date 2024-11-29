@@ -16,15 +16,17 @@ class Blockchain:
         self.chain = []
         self.current_votes = []
         self.difficulty = '00'  # Proof-of-work difficulty
-        self.max_votes = 5
+        self.max_votes = 2
           # Number of votes to propose a block
 
         self.create_genesis_block()
         self.proposed_block = None  # To hold the proposed block
     
+
+
+
     
     def create_genesis_block(self):
-        """Create the genesis block with proper proof-of-work."""
         genesis_votes = []  # No votes for the genesis block
         genesis_timestamp = time()  # Timestamp for the genesis block
         previous_hash = '0' * 64  # Placeholder previous hash for the genesis block
@@ -45,27 +47,20 @@ class Blockchain:
         self.chain.append(genesis_block) 
 
     def create_block(self, nonce, previous_hash, block_timestamp):
-        """Create a new block with the provided timestamp."""
-
         # Create the block with the provided timestamp
         block = {
             'index': len(self.chain) + 1,
             'votes': self.current_votes,
             'nonce': nonce,
             'previous_hash': previous_hash,
-            'timestamp': block_timestamp,  # Use the fixed block timestamp
+            'timestamp': block_timestamp,  
             'current_hash': self.hash_block(nonce, previous_hash, self.current_votes, block_timestamp),
         }
-
-        # Assign the same timestamp to all votes in this block
-        for vote in self.current_votes:
-            vote['timestamp'] = block_timestamp
 
         self.current_votes = []  # Clear the current votes
         self.chain.append(block)  # Append the block to the chain
         return block
 
-    
     
     def hash_block(self, nonce, previous_hash, votes, block_timestamp):
         """Create a SHA-256 hash of a block."""
@@ -76,13 +71,13 @@ class Blockchain:
             'timestamp': block_timestamp,  # Use the fixed timestamp
         }, sort_keys=True).encode()
         return hashlib.sha256(block_string).hexdigest()
-
-
+ 
+    
+    
     
     
     
     def proof_of_work(self, previous_hash, votes, block_timestamp):
-        """Simple proof-of-work algorithm."""
         nonce = 0
         while True:
             # Hash the block with the fixed block timestamp
@@ -92,24 +87,21 @@ class Blockchain:
             nonce += 1
 
     
-    
     def add_vote(self, voter_id, candidate, voter_name):
-        """
-        Add a vote to the current_votes list.
-        :param voter_id: Unique ID of the voter.
-        :param candidate: Candidate chosen by the voter (Ethereum or Bitcoin).
-        :param voter_name: Name of the voter.
-        :return: Response indicating success or failure.
-        """
         # Check if the candidate is valid
         if candidate not in ['Ethereum', 'Bitcoin']:
             return jsonify({'error': 'Invalid candidate'}), 400
+
+        # Check if the voter has already voted in the current block's votes
+        for vote in self.current_votes:
+            if vote['voter_id'] == voter_id:
+                return jsonify({'error': 'Voter has already voted in this block'}), 400
 
         # Check if the voter has already voted by iterating through the entire blockchain
         for block in self.chain:
             for vote in block['votes']:
                 if vote['voter_id'] == voter_id:
-                    return jsonify({'error': 'Voter has already voted'}), 400
+                    return jsonify({'error': 'Voter has already voted in the blockchain'}), 400
 
         # If the voter has not voted, add the vote to the current transaction list
         vote = {
@@ -126,49 +118,59 @@ class Blockchain:
 
         return True
 
+
     def propose_block(self):
         """Propose a new block after collecting enough votes."""
         last_block = self.last_block
         previous_hash = last_block['current_hash']
 
-        # Set the block timestamp ONCE here
+        # Set the block timestamp once here
         block_timestamp = time()
 
         # Perform proof-of-work for the proposed block
-        nonce, current_hash = self.proof_of_work(previous_hash, self.current_votes, block_timestamp)
+        nonce, current_hash2 = self.proof_of_work(previous_hash, self.current_votes, block_timestamp)
 
-        # Create the proposed block with the timestamp
-        self.create_block(nonce, previous_hash, block_timestamp)
+        proposed_block = {
+            'index': len(self.chain) + 1,
+            'votes': self.current_votes,
+            'nonce': nonce,
+            'previous_hash': previous_hash,
+            'timestamp': block_timestamp,  # Use the fixed block timestamp
+            'current_hash': current_hash2,
+        }
 
+        def validate_proposed_block(nonce, previous_hash, current_votes, block_timestamp, current_hash2):
+            """Validate if the proposed block matches its hash."""
+            # Recreate the hash of the proposed block data
+            rehashed = self.hash_block(nonce, previous_hash, current_votes, block_timestamp)
+            return rehashed == current_hash2
 
+        # Validation through 3 independent validators
+        def run_validators():
+            """Run 3 independent validators to check the proposed block."""
+            # Each validator validates the block and returns whether it's valid (True or False)
+            validator_results = []
+            
+            for _ in range(3):  # Run 3 validators
+                is_valid = validate_proposed_block(nonce, previous_hash, self.current_votes, block_timestamp, current_hash2)
+                validator_results.append(is_valid)
+            
+            # Majority consensus: at least 2 out of 3 validators must agree
+            return validator_results.count(True) >= 2
 
-# WTF IS THIS BRO 
-    def validate_block(self):
-        """Simulate the validation process with all validators"""
-        validation_results = []
-        for validator in self.validators:
-            # Simulate the validation process with a 1-second delay
-            sleep_time.sleep(1)
-            result = validator.validate(self.proposed_block)
-            validation_results.append(result)
-
-        # Check if at least 51% of validators agree
-        if validation_results.count(True) >= 2:
-            # Block is valid, add to the chain
-            self.chain.append(self.proposed_block)
-            self.proposed_block = None  # Reset proposed block
+        # Run the 3 validators and check if majority (2/3) agree on the validity
+        if run_validators():
+            # If the majority consensus agrees, create the block
+            self.create_block(nonce, previous_hash, block_timestamp)
             return True
         else:
-            # Block is invalid, discard
-            self.proposed_block = None
+            # If the majority consensus does not agree, the block is invalid
+            print("Block validation failed. Block not added.")
             return False
 
-    def get_validators_status(self):
-        """Get the validation status of all validators"""
-        status = {}
-        for validator in self.validators:
-            status[validator.name] = 'Valid' if validator.valid else 'Invalid'
-        return status
+
+
+
 
     def get_blocks_by_page(self, page_number, blocks_per_page=1):
         """Retrieve blocks for the current page"""
@@ -186,8 +188,6 @@ class Blockchain:
     def hash_data(self, data):
         """Returns the SHA-256 hash of the input data."""
         return hashlib.sha256(data.encode()).hexdigest()
-
-
 
 
 
@@ -234,12 +234,9 @@ def block_detail(block_index):
     return render_template('block_detail.html', block=block)
 
 
-
-
 @app.route('/voters', methods=['GET'])
 def voters():
-    return render_template('voters.html')  # Render the voter input page
-
+    return render_template('voters.html')  # Pass proposed blocks
 
 
 @app.route('/vote', methods=['POST'])
@@ -260,8 +257,6 @@ def new_vote():
     return jsonify({'message': f"Vote added successfully for {voter_name}!"}), 201
 
 
-
-
 @app.route('/mine', methods=['POST'])
 def mine():
     last_block = blockchain.last_block
@@ -269,6 +264,7 @@ def mine():
 
     # Perform proof-of-work to find the nonce
     nonce, current_hash = blockchain.proof_of_work(previous_hash, blockchain.current_votes)
+
 
     # Create a new block with the mined data
     block = blockchain.create_block(nonce, previous_hash)
@@ -279,24 +275,10 @@ def mine():
     }), 200
 
 
-
-@app.route('/validate_block', methods=['GET'])
-def validate_block():
-    # Validate the proposed block
-    if blockchain.validate_block():
-        return jsonify({'message': 'Block validated and added to the blockchain!'}), 200
-    else:
-        return jsonify({'message': 'Block validation failed!'}), 400
-
-
-
-
 @app.template_filter('to_datetime')
 def to_datetime_filter(block_timestamp):
     """Format timestamp to human-readable date and time."""
     return datetime.fromtimestamp(block_timestamp).strftime('%Y-%m-%d %H:%M:%S')
-
-
 
 
 @app.route('/results', methods=['GET'])
@@ -325,8 +307,6 @@ def results():
                            vote_count=vote_count,
                            ethereum_percentage=ethereum_percentage,
                            bitcoin_percentage=bitcoin_percentage)
-
-
 
 # Start the Flask app
 if __name__ == '__main__':

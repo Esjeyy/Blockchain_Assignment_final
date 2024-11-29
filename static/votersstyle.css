@@ -21,7 +21,7 @@ body {
 }
 
 /* Container for the main content */
-.container {
+.containerVotes {
     max-width: 600px;
     margin: 50px auto;
     padding: 40px;
@@ -73,34 +73,6 @@ button {
 
 button:hover {
     background-color: #008CBA;
-}
-
-/* Validators section */
-#validators-status {
-    margin-top: 30px;
-    font-size: 1.1rem;
-    color: #E0FFFF;
-}
-
-/* Loading slider */
-#loading-slider-container {
-    margin-top: 30px;
-    display: none;
-}
-
-#loading-slider {
-    width: 100%;
-    height: 10px;
-    background-color: #E0FFFF;
-    border-radius: 5px;
-    overflow: hidden;
-}
-
-#slider-progress {
-    width: 0;
-    height: 100%;
-    background-color: #00BFFF;
-    transition: width 1s ease;
 }
 
 /* Responsive styling */
